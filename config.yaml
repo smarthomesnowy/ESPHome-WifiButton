@@ -1,0 +1,121 @@
+esphome:
+    name: bigbutton
+    comment: One button to rule them all
+  esp8266:
+    board: d1_mini
+  
+  # Enable logging
+  logger:
+  
+  # Enable Home Assistant API
+  api:
+    encryption:
+      key: "i31USvDruBRuPndxTYuQ11ijowUdoQVXOKYwPUQITAw="
+  
+  ota:
+    password: "129b8fc2b0799621beb0b3f597d623d6"
+  
+  wifi:
+    ssid: !secret wifi_ssid
+    password: !secret wifi_password
+    manual_ip:
+      static_ip: 192.168.2.16
+      gateway: 192.168.2.254
+      subnet: 255.255.255.0
+    ap:
+      ssid: "Bigbutton Hotspot"
+      password: !secret ap_password
+      
+  captive_portal:
+  
+  web_server:
+    port: 80
+    
+  mqtt:
+    broker: 192.168.2.1
+    username: !secret mqtt_user
+    password: !secret mqtt_password
+   
+    
+  sensor:
+  
+    - platform: adc
+      pin: A0
+      id: "BigbuttonBattery"
+      name: "BigbuttonBattery"
+      update_interval: 300s
+      accuracy_decimals: 1
+      filters:
+        - multiply: 4.15
+        
+    - platform: template
+      name: "BigbuttonBatteryVoltage"
+      unit_of_measurement: 'V'
+      update_interval: 300s
+      accuracy_decimals: 1
+      lambda: |-
+        return (id(BigbuttonBattery).state);
+        
+    - platform: template
+      name: "BigbuttonBatteryPercentage"
+      unit_of_measurement: '%'
+      update_interval: 300s
+      accuracy_decimals: 1
+      lambda: |-
+        return ((id(BigbuttonBattery).state /4.1) * 100.00);
+  
+    - platform: dht
+      model: DHT22
+      pin: D1
+      temperature:
+        name: "Bigbutton Temperature"
+        accuracy_decimals: 1
+        filters:
+        - offset: -5.0      
+      humidity:
+        name: "Bigbutton Humidity"
+        accuracy_decimals: 1        
+      update_interval: 120s
+  
+  binary_sensor:
+  
+    - platform: gpio
+      pin: D2
+      name: "Bigbutton Motion Sensor"
+      device_class: motion
+      
+    - platform: gpio
+      pin:
+        number: D3
+        mode: INPUT_PULLUP
+        inverted: True
+      name: "Bigbutton"
+      device_class: light
+      filters:
+        - delayed_on: 15ms
+      on_press:
+        then:
+          - homeassistant.service:
+              service: light.turn_off
+              data:
+                entity_id: light.all_lights
+          - homeassistant.service:
+              service: scene.turn_on
+              data:
+                entity_id: scene.fireplace_off
+      on_double_click:
+        then:
+          - homeassistant.service:
+              service: light.turn_on
+              data:
+                entity_id: light.all_lights
+          - homeassistant.service:
+              service: scene.turn_on
+              data:
+                entity_id: scene.fireplace_on
+  switch:
+          
+    - platform: restart
+      name: Bigbutton restart
+  
+  
