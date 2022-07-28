@@ -53,7 +53,7 @@ sensor:
 
 ```
 ### Home Assistant
-In the ESPHome yaml file you can see how I made the three different "presses" of the button, I then used a Home Assistant * * call service* * call to run a scene to turn off different zones of lighting at the same time with one button press and turn everything on with a double press.
+In the ESPHome yaml file you can see how I made the two different "presses" of the button. I then used the Home Assistant call service to run a scene to turn off different zones of lighting at the same time with a single press and turn everything on with a double press.
 
 ```yaml
 binary_sensor:
@@ -104,6 +104,7 @@ I used hot glue to keep the PIR sensor and DHT sensor inplace in the "knock out"
 ## Pictures / Video
 
 ## Conclusion
-For about 10 Euro spent this is a really good addition to the smart home, I use it every night to shut the house down and every morning to wake it up.
-The battery life is about 5 days at the moment and I have set an alert in Home Assisant to warn me when the battery is at 5%.
+I spent about 12 euro on the D1 mini and the sensors, the button I found in a scrap bin and the phonebank I have had lying around for years and never used.
+I use it every night to shut the house down and every morning to wake it up.
+The battery life is about 5 days at the moment and I have set an alert in Home Assisant to warn me when the battery is at 5% so I can hook it up to the smart charger I have on my nightstand that charges my phone.
 
