@@ -18,6 +18,7 @@ Onboard there will be a PIR motion sensor that ties into the Home Assistant Alar
 - 10MHA powerbank
 
 ## Coding
+<<<<<<< HEAD
 ### ESPHome
 The main challenge in the coding of this device was making the battery sensor.
 I wanted to have the actual voltage the battery was supplying and also a % amount of the battery remaining.
@@ -58,3 +59,7 @@ some coding
 some text
 ## Pictures / Video
 
+=======
+
+## Construction
+>>>>>>> cf9cbacf8fbd341660cd1d6d86def42bf834d301
