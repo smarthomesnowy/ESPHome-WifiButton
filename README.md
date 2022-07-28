@@ -18,7 +18,7 @@ Onboard there will be a PIR motion sensor that ties into the Home Assistant Alar
 - 10MHA powerbank
 
 ## Coding
-<<<<<<< HEAD
+
 ### ESPHome
 The main challenge in the coding of this device was making the battery sensor.
 I wanted to have the actual voltage the battery was supplying and also a % amount of the battery remaining.
@@ -53,13 +53,57 @@ sensor:
 
 ```
 ### Home Assistant
-some coding
+In the ESPHome yaml file you can see how I made the three different "presses" of the button, I then used a Home Assistant * * call service* * call to run a scene to turn off different zones of lighting at the same time with one button press and turn everything on with a double press.
+
+```yaml
+binary_sensor:
+
+  - platform: gpio
+    pin: D2
+    name: "Bigbutton Motion Sensor"
+    device_class: motion
+    
+  - platform: gpio
+    pin:
+      number: D3
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Bigbutton"
+    device_class: light
+    filters:
+      - delayed_on: 15ms
+    on_press:
+      then:
+        - homeassistant.service:
+            service: light.turn_off
+            data:
+              entity_id: light.all_lights
+        - homeassistant.service:
+            service: scene.turn_on
+            data:
+              entity_id: scene.fireplace_off
+    on_double_click:
+      then:
+        - homeassistant.service:
+            service: light.turn_on
+            data:
+              entity_id: light.all_lights
+        - homeassistant.service:
+            service: scene.turn_on
+            data:
+              entity_id: scene.fireplace_on
+```
 
 ## Construction
-some text
+I really want to get a battery inside the case of the button but I tried two different options before settling on a larger battery glued to the bottom of the case. This also adds a lot better battery capacity.
+
+Fitting the D1 mini board in the area inside the case was also a challenge.
+
+I used hot glue to keep the PIR sensor and DHT sensor inplace in the "knock out" holes in the sides of the button.
+
 ## Pictures / Video
 
-=======
+## Conclusion
+For about 10 Euro spent this is a really good addition to the smart home, I use it every night to shut the house down and every morning to wake it up.
+The battery life is about 5 days at the moment and I have set an alert in Home Assisant to warn me when the battery is at 5%.
 
-## Construction
->>>>>>> cf9cbacf8fbd341660cd1d6d86def42bf834d301
